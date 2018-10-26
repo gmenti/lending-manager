@@ -15,17 +15,21 @@ class LendingObserver
     public function created(Lending $lending)
     {
         $date = \Carbon\Carbon::now();
+        $installments = [];
+
         for ($i = 1; $i <= $lending->installment_amount; $i++) {
             $date->addDay(1);
             if ($date->isSunday()) {
                 $i--;
                 continue;
             }
-            $lending->installments()->create([
-                'due_at' => $date,
+            $installments[] = [
+                'due_at' => $date->copy(),
                 'value' => $lending->installment_price
-            ]);
+            ];
         }
+
+        $lending->installments()->createMany($installments);
     }
 
     /**
