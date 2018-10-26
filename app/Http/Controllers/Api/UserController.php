@@ -18,7 +18,8 @@ class UserController extends RestController
      */
     protected function validated(Request $request)
     {
-        dd($request->all);
+        $id = $request->route()->parameter('user');
+
         $uniqueEmailRule = Rule::unique('users');
         if (!empty($id)) {
             $uniqueEmailRule = $uniqueEmailRule->ignore($id);
