@@ -13,6 +13,7 @@ use Laravel\Passport\HasApiTokens;
  * @property bool is_admin
  * @property Client[] clients
  * @method static $this findOrFail(int $id)
+ * @method static $this first()
  */
 class User extends Authenticatable
 {

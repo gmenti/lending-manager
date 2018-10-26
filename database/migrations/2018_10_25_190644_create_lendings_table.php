@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientsTable extends Migration
+class CreateLendingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,20 +12,19 @@ class CreateClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('clients', function (Blueprint $table) {
+        Schema::create('lendings', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');
-            $table->string('name');
-            $table->char("document", 11);
-            $table->char('phone_number', 11);
-            $table->string('city');
-            $table->string('address');
-            $table->string('street');
-            $table->string('complement');
-            $table->string("number");
+            $table->unsignedInteger('client_id');
+            $table->foreign('client_id')
+                ->references('id')->on('clients')
+                ->onDelete('cascade');
+            $table->integer('installment_amount');
+            $table->decimal('installment_price');
+            $table->decimal('value');
             $table->timestamps();
         });
     }
@@ -37,6 +36,6 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clients');
+        Schema::dropIfExists('lendings');
     }
 }

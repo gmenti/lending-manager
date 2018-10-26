@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Entities\Client;
+use App\Entities\Lending;
 use App\Entities\User;
 use App\Policies\ClientPolicy;
+use App\Policies\LendingPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
@@ -18,7 +20,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         User::class => UserPolicy::class,
-        Client::class => ClientPolicy::class
+        Client::class => ClientPolicy::class,
+        Lending::class => LendingPolicy::class
     ];
 
     /**

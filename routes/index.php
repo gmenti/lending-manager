@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 Route::post('/login', 'AuthController@login');
 Route::post('/register', 'AuthController@register');
 
-
 Route::group(['middleware' => ['auth:api']], function () {
     $this->get('/me', function (Request $request) {
         return $request->user();
@@ -27,6 +26,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     ]);
 
     $this->resource('/clients', 'ClientController', [
+        'except' => ['create', 'edit']
+    ]);
+
+    $this->resource('/lendings', 'LendingController', [
         'except' => ['create', 'edit']
     ]);
 });

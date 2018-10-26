@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int user_id
- * @method static $this findOrFail(int $id)
+ * @property int id
+ * @property User user
+ * @method static Client findOrFail(int $id)
  * @method static Client[] all()
+ * @method static Client create(array $data)
+ * @method static Client first()
  */
 class Client extends Model
 {
@@ -33,5 +37,13 @@ class Client extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the lendings for the client.
+     */
+    public function lendings()
+    {
+        return $this->hasMany(Lending::class);
     }
 }
