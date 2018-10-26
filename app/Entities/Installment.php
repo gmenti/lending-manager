@@ -4,8 +4,21 @@ namespace App\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property Lending lending
+ */
 class Installment extends Model
 {
+    /** @var array */
+    protected $with = [
+        'lending.client'
+    ];
+
+    /** @var array */
+    protected $hidden = [
+        'lending'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

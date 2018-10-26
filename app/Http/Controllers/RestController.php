@@ -55,7 +55,7 @@ abstract class RestController extends Controller
         if (!empty($data['range'])) {
             $data['range'] = json_decode($data['range'], true);
         } else {
-            $data['range'] = [];
+            $data['range'] = [0, 0];
         }
 
         $data = \Validator::make($data, [
@@ -65,9 +65,9 @@ abstract class RestController extends Controller
             'sort' => 'required|array',
             'sort.0' => 'required|string',
             'sort.1' => 'required|in:ASC,DESC',
-            'range' => 'array',
-            'range.0' => 'int|min:0|max:' . $data['range'][1],
-            'range.1' => 'int|min:' . $data['range'][0]
+            'range' => 'required|array',
+            'range.0' => 'required|int|min:0|max:' . $data['range'][1],
+            'range.1' => 'required|int|min:' . $data['range'][0]
         ])->validate();
 
         $query = $this->entityClass::orderBy($data['sort'][0], $data['sort'][1]);
@@ -86,10 +86,17 @@ abstract class RestController extends Controller
             }
         }
 
-        if (!empty($data['range'])) {
-            $start = $data['range'][0] ?? 0;
-            $amount = $data['range'][1] - $data['range'][0] ?? 0;
+        if (!empty(array_filter($data['range']))) {
+            $total = $query->count();
+
+            $start = $data['range'][0];
+            $limit = $data['range'][1];
+            $amount = $limit - $start;
+
             $query = $query->skip($start)->take($amount);
+            $resource = \Route::current()->uri;
+
+            header("Content-Range: $resource $start-$limit/$total");
         }
 
         $results = $query->get();
@@ -97,6 +104,7 @@ abstract class RestController extends Controller
         foreach ($results as $result) {
             $this->authorize('view', $result);
         }
+
 
         return $results;
     }

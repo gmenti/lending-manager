@@ -32,4 +32,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     $this->resource('/lendings', 'LendingController', [
         'except' => ['create', 'edit']
     ]);
+
+    $this->get('/installments', 'InstallmentController@index');
 });

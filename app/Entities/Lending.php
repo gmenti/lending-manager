@@ -31,7 +31,7 @@ class Lending extends Model
      * @var array
      */
     protected $fillable = [
-        'installment_amount', 'installment_price', 'value'
+        'installment_amount', 'installment_price', 'value', 'client_id'
     ];
 
     /** @var array */

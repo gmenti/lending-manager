@@ -14,24 +14,11 @@ class LendingsTableSeeder extends Seeder
     {
         $client = Client::first();
 
-        $lending = Lending::create([
+        Lending::create([
             'installment_amount' => 10,
             'installment_price' => 33,
             'value' => 300,
             'client_id' => $client->id
         ]);
-
-        $date = \Carbon\Carbon::now();
-        for ($i = 1; $i <= $lending->installment_amount; $i++) {
-            $date->addDay(1);
-            if ($date->isSunday()) {
-                $i--;
-                continue;
-            }
-            $lending->installments()->create([
-                'due_at' => $date,
-                'value' => $lending->installment_price
-            ]);
-        }
     }
 }
